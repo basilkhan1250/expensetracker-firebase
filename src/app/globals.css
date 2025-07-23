@@ -9,6 +9,19 @@
    margin: 0;
  }
 
- body{
-  background-color: slateblue;
+
+ @layer base {
+   body {
+     @apply bg-slate-900 text-white;
+   }
  }
+
+ @layer utilities {
+   .btn {
+     @apply px-4 py-2 text-sm capitalize rounded-xl bg-red-600 border-red-600 text-white cursor-pointer
+   }
+ }
+/* 
+ .btn:hover {
+   cursor: pointer;
+ } */
