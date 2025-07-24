@@ -11,13 +11,13 @@
    }
 
    button {
-     @apply hover:scale-110 transition-all duration-100;
+     @apply hover:scale-110 transition-all duration-100 cursor-pointer
    }
  }
 
  @layer utilities {
    .btn {
-     @apply px-4 py-2 text-sm capitalize rounded-xl cursor-pointer
+     @apply px-4 py-2 text-sm capitalize rounded-xl
    }
 
    .btn-primary {
