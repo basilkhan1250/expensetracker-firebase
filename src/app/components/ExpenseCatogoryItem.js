@@ -1,7 +1,7 @@
 import { currencyFormatter } from "@/app/lib/utils"
 
 
-function ExpenseCatogoryItem({ color, title, amount }) {
+function ExpenseCatogoryItem({ color, title, total }) {
     return (
         <>
             <button>
@@ -10,7 +10,7 @@ function ExpenseCatogoryItem({ color, title, amount }) {
                         <div className="w-[25px] h-[25px] rounded-full" style={{ backgroundColor: color }} />
                         <h4 className="capitalize">{title}</h4>
                     </div>
-                    <p>{currencyFormatter(amount)}</p>
+                    <p>{currencyFormatter(total)}</p>
                 </div>
             </button>
         </>

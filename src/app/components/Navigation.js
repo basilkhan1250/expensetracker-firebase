@@ -19,7 +19,7 @@ function Nav() {
 
                     {/* right side of navigation */}
 
-                    <nav className="flex items-center gap-2">
+                    <nav className="flex items-center gap-4">
                         <div><ImStatsBars className="text-2xl" /></div>
                         <div><button className="btn btn-danger">Sign out</button></div>
                     </nav>
