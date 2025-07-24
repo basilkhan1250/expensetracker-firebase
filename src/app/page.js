@@ -45,6 +45,9 @@ const DUMMY_DATA = [
 export default function Home() {
   return (
     <>
+      <div className="absolute top-0 left-0 w-full h-full ">
+
+      </div>
       <main className="container max-w-2xl px-6 py-6 mx-auto">
 
         <section className="py-3">
