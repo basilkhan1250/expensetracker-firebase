@@ -21,7 +21,7 @@ function Nav() {
 
                     <nav className="flex items-center gap-2">
                         <div><ImStatsBars className="text-2xl" /></div>
-                        <div><button className="btn">Sign out</button></div>
+                        <div><button className="btn btn-danger">Sign out</button></div>
                     </nav>
 
                 </div>
