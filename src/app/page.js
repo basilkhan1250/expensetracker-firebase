@@ -7,7 +7,7 @@ import { Doughnut } from "react-chartjs-2"
 import { useState, useRef } from "react"
 import Modal from "@/app/components/Modal"
 import { db } from "../../firebaseConfig"
-import 
+import { collection, addDoc } from "firebase/firestore"
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
