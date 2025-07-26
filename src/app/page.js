@@ -7,7 +7,8 @@ import { Doughnut } from "react-chartjs-2"
 import { useState, useRef, useEffect } from "react"
 import Modal from "@/app/components/Modal"
 import { db } from "../../firebaseConfig"
-import { collection, addDoc, getDocs, doc } from "firebase/firestore"
+import { collection, addDoc, getDocs, doc, deleteDoc } from "firebase/firestore"
+import { FaRegTrashAlt } from 'react-icons/fa'
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -77,6 +78,21 @@ export default function Home() {
           }
         ]
       })
+      descriptionRef.current.value = ""
+      amountRef.current.value = ""
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
+  const deleteIncomeEntryhandeler = async (incomeId) => {
+    const docRef = doc(db, "income", incomeId)
+
+    try {
+      await deleteDoc(docRef)
+      setIncome(prevState => {
+        return prevState.filter(i => i.id !== incomeId)
+      })
     } catch (error) {
       console.log(error.message)
     }
@@ -126,7 +142,13 @@ export default function Home() {
                   <p className="font-semibold">{i.description}</p>
                   <small className="text-xs">{i.createAt.toISOString()}</small>
                 </div>
-                <p className="flex items-center gap-2">{currencyFormatter(i.amount)}</p>
+                <p className="flex items-center gap-2">{currencyFormatter(i.amount)}
+                  <button onClick={() => {
+                    deleteIncomeEntryhandeler(i.id)
+                  }}>
+                    <FaRegTrashAlt />
+                  </button>
+                </p>
               </div>
             )
           })}
