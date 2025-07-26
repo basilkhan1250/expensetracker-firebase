@@ -5,6 +5,8 @@ import ExpenseCatogoryItem from "@/app/components/ExpenseCatogoryItem"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
 import { Doughnut } from "react-chartjs-2"
 import { useState } from "react"
+import Modal from "@/app/components/Modal"
+
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -51,18 +53,7 @@ export default function Home() {
 
   return (
     <>
-      {modalIsOpen && (
-        < div className="absolute top-0 left-0 w-full h-full z-10">
-          <div className="container mx-auto max-w-2xl h-[80vh] rounded-3xl bg-slate-800 py-6 px-4 ">
-            <button
-              onClick={() => {
-                setModalIsOpen(false)
-              }}
-              className="w-10 h-10 mb-4 font-bold rounded-full bg-slate-600">X</button>
-            <h3>I'm a modal</h3>
-          </div>
-        </div >
-      )}
+      <Modal show={modalIsOpen} onClose={setModalIsOpen} />
 
       <main className="container max-w-2xl px-6 py-6 mx-auto">
 
@@ -109,7 +100,7 @@ export default function Home() {
                   data: DUMMY_DATA.map(expense => expense.total),
                   backgroundColor: DUMMY_DATA.map(expense => expense.color),
                   borderColor: ['#18181b'],
-                  borderWidth: 2
+                  borderWidth: 4
                 }
               ]
             }} />
