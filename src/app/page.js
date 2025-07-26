@@ -4,10 +4,10 @@ import { currencyFormatter } from "@/app/lib/utils"
 import ExpenseCatogoryItem from "@/app/components/ExpenseCatogoryItem"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
 import { Doughnut } from "react-chartjs-2"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import Modal from "@/app/components/Modal"
 import { db } from "../../firebaseConfig"
-import { collection, addDoc } from "firebase/firestore"
+import { collection, addDoc, getDocs, doc } from "firebase/firestore"
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -48,7 +48,8 @@ const DUMMY_DATA = [
 ]
 
 export default function Home() {
-
+  const [income, setIncome] = useState([])
+  console.log(income)
   const [showAddIncomeModal, setshowAddIncomeModal] = useState(false)
   const amountRef = useRef()
   const descriptionRef = useRef()
@@ -67,10 +68,37 @@ export default function Home() {
     try {
       const docSnap = await addDoc(collectionRef, newIncome)
 
+      setIncome(prevState => {
+        return [
+          ...prevState,
+          {
+            id: docSnap.id,
+            ...newIncome,
+          }
+        ]
+      })
     } catch (error) {
       console.log(error.message)
     }
   }
+
+  useEffect(() => {
+    const getIncomeData = async () => {
+      const collectionRef = collection(db, "income")
+      const docsSnap = await getDocs(collectionRef)
+      console.log(docsSnap.docs)
+      const data = docsSnap.docs.map(doc => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+          createAt: new Date(doc.data().createAt.toMillis())
+        }
+      })
+      setIncome(data)
+    }
+
+    getIncomeData()
+  }, [])
 
   return (
     <>
@@ -88,6 +116,21 @@ export default function Home() {
 
           <button type="submit" className="btn btn-primary">Add Entry</button>
         </form>
+
+        <div className="flex flex-col gap-4 mt-6">
+          <h3 className="text-2xl font-bold">Income History</h3>
+          {income.map((i) => {
+            return (
+              <div key={i.id} className="flex justify-between item-center">
+                <div>
+                  <p className="font-semibold">{i.description}</p>
+                  <small className="text-xs">{i.createAt.toISOString()}</small>
+                </div>
+                <p className="flex items-center gap-2">{currencyFormatter(i.amount)}</p>
+              </div>
+            )
+          })}
+        </div>
       </Modal >
 
       <main className="container max-w-2xl px-6 py-6 mx-auto">
