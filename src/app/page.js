@@ -4,9 +4,10 @@ import { currencyFormatter } from "@/app/lib/utils"
 import ExpenseCatogoryItem from "@/app/components/ExpenseCatogoryItem"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
 import { Doughnut } from "react-chartjs-2"
-import { useState } from "react"
+import { useState, useRef } from "react"
 import Modal from "@/app/components/Modal"
-
+import { db } from "../../firebaseConfig"
+import 
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -48,21 +49,34 @@ const DUMMY_DATA = [
 
 export default function Home() {
 
-  const [showAddIncomeModal, setshowAddIncomeModal] = useState(true)
+  const [showAddIncomeModal, setshowAddIncomeModal] = useState(false)
+  const amountRef = useRef()
+  const descriptionRef = useRef()
+
+  const addIncomeHandler = (e) => {
+    e.preventDefault()
+
+    const newIncome = {
+      amount: amountRef.current.value,
+      description: descriptionRef.current.value,
+      createAt: new Date()
+    }
+    console.log(newIncome)
+  }
 
 
   return (
     <>
       <Modal show={showAddIncomeModal} onClose={setshowAddIncomeModal} >
-        <form className="input-groups">
+        <form onSubmit={addIncomeHandler} className="input-groups">
           <div className="input-groups">
             <label htmlFor="amount">Income Amount</label>
-            <input name="amount" type="number" min={0.01} step={0.01} placeholder="Enter Income Amount" required />
+            <input name="amount" type="number" ref={amountRef} min={0.01} step={0.01} placeholder="Enter Income Amount" required />
           </div>
 
           <div className="input-groups">
             <label htmlFor="amount">description</label>
-            <input name="description" type="text" placeholder="Enter Description" required />
+            <input name="description" type="text" ref={descriptionRef} placeholder="Enter Description" required />
           </div>
 
           <button type="submit" className="btn btn-primary">Add Entry</button>
