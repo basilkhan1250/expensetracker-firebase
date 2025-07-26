@@ -53,7 +53,7 @@ export default function Home() {
   const amountRef = useRef()
   const descriptionRef = useRef()
 
-  const addIncomeHandler = (e) => {
+  const addIncomeHandler = async (e) => {
     e.preventDefault()
 
     const newIncome = {
@@ -62,8 +62,15 @@ export default function Home() {
       createAt: new Date()
     }
     console.log(newIncome)
-  }
+    const collectionRef = collection(db, "income")
 
+    try {
+      const docSnap = await addDoc(collectionRef, newIncome)
+
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
 
   return (
     <>
