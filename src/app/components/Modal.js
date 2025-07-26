@@ -1,4 +1,4 @@
-function Modal({ show, onClose }) {
+function Modal({ show, onClose, children }) {
     return (
         <>
             <div style={{
@@ -10,7 +10,7 @@ function Modal({ show, onClose }) {
                             onClose(false)
                         }}
                         className="w-10 h-10 mb-4 font-bold rounded-full bg-slate-600">X</button>
-                    <h3>I'm a modal</h3>
+                    {children}
                 </div>
             </div >
         </>

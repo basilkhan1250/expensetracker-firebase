@@ -53,7 +53,9 @@ export default function Home() {
 
   return (
     <>
-      <Modal show={modalIsOpen} onClose={setModalIsOpen} />
+      <Modal show={modalIsOpen} onClose={setModalIsOpen} >
+        <h3>Hello Nigga</h3>
+      </Modal >
 
       <main className="container max-w-2xl px-6 py-6 mx-auto">
 
