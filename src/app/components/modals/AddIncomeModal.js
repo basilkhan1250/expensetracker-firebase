@@ -1,15 +1,15 @@
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useContext, useState } from "react"
 import { currencyFormatter } from "@/app/lib/utils"
-import { db } from "../../../../firebaseConfig"
-import { collection, addDoc, getDocs, doc, deleteDoc } from "firebase/firestore"
+
 import { FaRegTrashAlt } from 'react-icons/fa'
 import Modal from "@/app/components/Modal"
-
+import { financeContext } from "@/app/lib/store/finance-context"
 
 
 function AddIncomeModal({ show, onClose }) {
     const amountRef = useRef()
     const descriptionRef = useRef()
+    const { income, addIncomeItem, removeIncomeItem } = useContext(financeContext)
 
     // function handlers
 
@@ -23,20 +23,9 @@ function AddIncomeModal({ show, onClose }) {
             createAt: new Date()
         }
         console.log(newIncome)
-        const collectionRef = collection(db, "income")
 
         try {
-            const docSnap = await addDoc(collectionRef, newIncome)
-
-            setIncome(prevState => {
-                return [
-                    ...prevState,
-                    {
-                        id: docSnap.id,
-                        ...newIncome,
-                    }
-                ]
-            })
+            await addIncomeItem(newIncome)
             descriptionRef.current.value = ""
             amountRef.current.value = ""
         } catch (error) {
@@ -45,39 +34,12 @@ function AddIncomeModal({ show, onClose }) {
     }
 
     const deleteIncomeEntryhandeler = async (incomeId) => {
-        const docRef = doc(db, "income", incomeId)
-
         try {
-            await deleteDoc(docRef)
-            setIncome(prevState => {
-                return prevState.filter(i => i.id !== incomeId)
-            })
+            await removeIncomeItem(incomeId)
         } catch (error) {
             console.log(error.message)
         }
     }
-
-
-
-
-    useEffect(() => {
-        const getIncomeData = async () => {
-            const collectionRef = collection(db, "income")
-            const docsSnap = await getDocs(collectionRef)
-            console.log(docsSnap.docs)
-            const data = docsSnap.docs.map(doc => {
-                return {
-                    id: doc.id,
-                    ...doc.data(),
-                    createAt: new Date(doc.data().createAt.toMillis())
-                }
-            })
-            setIncome(data)
-        }
-
-        getIncomeData()
-    }, [])
-
 
     return (
         <>
@@ -98,7 +60,7 @@ function AddIncomeModal({ show, onClose }) {
 
                 <div className="flex flex-col gap-4 mt-6">
                     <h3 className="text-2xl font-bold">Income History</h3>
-                    {income.map((i) => {
+                    {income.map(i => {
                         return (
                             <div key={i.id} className="flex justify-between item-center">
                                 <div>

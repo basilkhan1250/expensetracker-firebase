@@ -46,10 +46,8 @@ const DUMMY_DATA = [
 ]
 
 export default function Home() {
-  const [income, setIncome] = useState([])
-  console.log(income)
+  
   const [showAddIncomeModal, setshowAddIncomeModal] = useState(false)
-
 
   return (
     <>
