@@ -4,50 +4,19 @@ import { currencyFormatter } from "@/app/lib/utils"
 import ExpenseCatogoryItem from "@/app/components/ExpenseCatogoryItem"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
 import { Doughnut } from "react-chartjs-2"
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { financeContext } from "./lib/store/finance-context"
 import AddIncomeModal from "@/app/components/modals/AddIncomeModal"
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 
-const DUMMY_DATA = [
-  {
-    id: 1,
-    title: "Entertainment",
-    color: "#613",
-    total: 500
-  },
-  {
-    id: 2,
-    title: "Bike Repair",
-    color: "#890",
-    total: 300
-  },
-  {
-    id: 3,
-    title: "Petrol",
-    color: "#519",
-    total: 100
-  },
-  {
-    id: 4,
-    title: "Laptop",
-    color: "#190",
-    total: 700
-  },
-  {
-    id: 5,
-    title: "House Paint",
-    color: "#399",
-    total: 1000
-  },
-
-]
-
 export default function Home() {
-  
   const [showAddIncomeModal, setshowAddIncomeModal] = useState(false)
+  const [balance, setBalance] = useState(0)
+  const { expenses } = useContext(financeContext)
+
 
   return (
     <>
@@ -75,7 +44,7 @@ export default function Home() {
           <h3 className="text-2xl">My Expenses</h3>
 
           <div className="flex flex-col gap-4 mt-6">
-            {DUMMY_DATA.map((expense, id) => {
+            {expenses.map((expense, id) => {
               return (
                 <ExpenseCatogoryItem
                   key={expense.id}
@@ -92,12 +61,12 @@ export default function Home() {
           <h3 className="text-2xl">Stats</h3>
           <div className="w-1/2 mx-auto">
             <Doughnut data={{
-              labels: DUMMY_DATA.map(expense => expense.title),
+              labels: expenses.map(expense => expense.title),
               datasets: [
                 {
                   label: "Expenses",
-                  data: DUMMY_DATA.map(expense => expense.total),
-                  backgroundColor: DUMMY_DATA.map(expense => expense.color),
+                  data: expenses.map(expense => expense.total),
+                  backgroundColor: expenses.map(expense => expense.color),
                   borderColor: ['#18181b'],
                   borderWidth: 4
                 }

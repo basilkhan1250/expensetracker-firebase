@@ -6,12 +6,14 @@ import { collection, addDoc, getDocs, doc, deleteDoc } from "firebase/firestore"
 
 export const financeContext = createContext({
     income: [],
+    expenses: [],
     addIncomeItem: async () => { },
     removeIncomeItem: async () => { },
 })
 
 export default function FinanceContextProvider({ children }) {
     const [income, setIncome] = useState([])
+    const [expenses, setExpense] = useState([])
 
     const addIncomeItem = async (newIncome) => {
 
@@ -50,7 +52,7 @@ export default function FinanceContextProvider({ children }) {
         }
     }
 
-    const values = { income, addIncomeItem, removeIncomeItem }
+    const values = { income, expenses, addIncomeItem, removeIncomeItem }
 
     useEffect(() => {
         const getIncomeData = async () => {
@@ -67,8 +69,23 @@ export default function FinanceContextProvider({ children }) {
             setIncome(data)
         }
 
-        getIncomeData()
+        const getExpenseData = async () => {
+            const collectionRef = collection(db, "expense")
+            const docsSnap = await getDocs(collectionRef)
 
+            const data = docsSnap.docs.map((doc) => {
+                return {
+                    id: doc.id,
+                    ...doc.data()
+                }
+            })
+
+            setExpense(data)
+        }
+
+
+        getIncomeData()
+        getExpenseData()
     }, [])
 
     return (
