@@ -18,11 +18,12 @@ function AddIncomeModal({ show, onClose }) {
         e.preventDefault()
 
         const newIncome = {
-            amount: amountRef.current.value,
+            amount: +amountRef.current.value,
             description: descriptionRef.current.value,
             createAt: new Date()
         }
-        console.log(newIncome)
+        console.log(typeof newIncome.amount)
+        
 
         try {
             await addIncomeItem(newIncome)
