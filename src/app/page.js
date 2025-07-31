@@ -18,10 +18,10 @@ export default function Home() {
   const { expenses, income } = useContext(financeContext)
 
   useEffect(() => {
-    
+
     const newBalance = income.reduce((total, i) => {
       return total + i.amount
-    }, 0) -
+    }, 0) 
       expenses.reduce((total, e) => {
         return total + e.total
       }, 0)
