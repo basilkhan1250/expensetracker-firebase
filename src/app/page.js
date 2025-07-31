@@ -4,7 +4,7 @@ import { currencyFormatter } from "@/app/lib/utils"
 import ExpenseCatogoryItem from "@/app/components/ExpenseCatogoryItem"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"
 import { Doughnut } from "react-chartjs-2"
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { financeContext } from "./lib/store/finance-context"
 import AddIncomeModal from "@/app/components/modals/AddIncomeModal"
 
@@ -15,8 +15,13 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 export default function Home() {
   const [showAddIncomeModal, setshowAddIncomeModal] = useState(false)
   const [balance, setBalance] = useState(0)
-  const { expenses } = useContext(financeContext)
+  const { expenses, income } = useContext(financeContext)
 
+  useEffect(() => {
+    const newBalance = income.reduce((total, i) =>{
+      return  
+    }, 0)
+  }, [expenses, income])
 
   return (
     <>
