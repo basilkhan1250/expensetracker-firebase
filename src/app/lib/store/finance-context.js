@@ -1,19 +1,41 @@
 'use client'
 
 import { createContext, useState, useEffect } from "react";
-import { db } from "../../../../firebaseConfig"
-import { collection, addDoc, getDocs, doc, deleteDoc } from "firebase/firestore"
+import { db } from "../../../../firebaseConfig";
+import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc } from "firebase/firestore"
 
 export const financeContext = createContext({
     income: [],
     expenses: [],
     addIncomeItem: async () => { },
     removeIncomeItem: async () => { },
+    addExpenseItem: async () => { },
 })
 
 export default function FinanceContextProvider({ children }) {
     const [income, setIncome] = useState([])
-    const [expenses, setExpense] = useState([])
+    const [expenses, setExpenses] = useState([])
+
+    const addExpenseItem = async (expenseCatogaryId, newExpense) => {
+        const docRef = doc(db, "expense", expenseCatogaryId)
+        try {
+            await updateDoc(docRef, { ...newExpense })
+
+            setExpenses(prevState => {
+                const updatedExpenses = [...prevState]
+                const foundIndex = updatedExpenses.findIndex(expense => {
+                    return expense.id === expenseCatogaryId
+                })
+
+                updatedExpenses[foundIndex] = { id: expenseCatogaryId, ...newExpense }
+                console.log("success", updatedExpenses)
+                return updatedExpenses
+            })
+        } catch (error) {
+            console.error("failed", error.message)
+            throw error
+        }
+    }
 
     const addIncomeItem = async (newIncome) => {
 
@@ -52,7 +74,7 @@ export default function FinanceContextProvider({ children }) {
         }
     }
 
-    const values = { income, expenses, addIncomeItem, removeIncomeItem }
+    const values = { income, expenses, addIncomeItem, removeIncomeItem, addExpenseItem }
 
     useEffect(() => {
         const getIncomeData = async () => {
@@ -80,9 +102,8 @@ export default function FinanceContextProvider({ children }) {
                 }
             })
 
-            setExpense(data)
+            setExpenses(data)
         }
-
 
         getIncomeData()
         getExpenseData()

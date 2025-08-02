@@ -7,10 +7,10 @@ import { v4 as uuidv4 } from "uuid"
 function AddExpensesModal({ show, onClose }) {
     const [expenseAmount, setExpenseAmount] = useState("")
     const [selectedCatagory, setSelectedCatagory] = useState(null)
-    const { expenses } = useContext(financeContext)
+    const { expenses, addExpenseItem } = useContext(financeContext)
 
 
-    const AddExpenseItemHandler = () => {
+    const AddExpenseItemHandler = async () => {
 
         const expense = expenses.find(e => {
             return e.id === selectedCatagory
@@ -29,10 +29,18 @@ function AddExpensesModal({ show, onClose }) {
                 }
             ]
         }
-        console.log(newExpense)
-        setExpenseAmount("")
-        setSelectedCatagory(null)
-        onclose()
+        try {
+
+            await addExpenseItem(selectedCatagory, newExpense)
+
+            console.log(newExpense)
+            setExpenseAmount("")
+            setSelectedCatagory(null)
+            onClose()
+
+        } catch (error) {
+            console.log(error.message)
+        }
     }
 
 
