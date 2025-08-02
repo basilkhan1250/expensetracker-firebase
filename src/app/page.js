@@ -7,6 +7,7 @@ import { Doughnut } from "react-chartjs-2"
 import { useState, useContext, useEffect } from "react"
 import { financeContext } from "./lib/store/finance-context"
 import AddIncomeModal from "@/app/components/modals/AddIncomeModal"
+import AddExpensesModal from "./components/modals/AddExpensesModal"
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -14,6 +15,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Home() {
   const [showAddIncomeModal, setshowAddIncomeModal] = useState(false)
+  const [showAddExpenseModal, setshowAddExpenseModal] = useState(false)
   const [balance, setBalance] = useState(0)
   const { expenses, income } = useContext(financeContext)
 
@@ -21,10 +23,10 @@ export default function Home() {
 
     const newBalance = income.reduce((total, i) => {
       return total + i.amount
-    }, 0) 
-      expenses.reduce((total, e) => {
-        return total + e.total
-      }, 0)
+    }, 0)
+    expenses.reduce((total, e) => {
+      return total + e.total
+    }, 0)
 
     setBalance(newBalance)
   }, [expenses, income])
@@ -32,6 +34,9 @@ export default function Home() {
   return (
     <>
       <AddIncomeModal show={showAddIncomeModal} onClose={setshowAddIncomeModal} />
+
+      <AddExpensesModal show={showAddExpenseModal} onClose={setshowAddExpenseModal} />
+
       <main className="container max-w-2xl px-6 py-6 mx-auto">
 
         <section className="py-3">
@@ -40,13 +45,18 @@ export default function Home() {
         </section>
 
         <section className="flex items-center gap-2 py-3">
+
           <button
-            onClick={() => { }} className="btn btn-primary">+ Expenses</button>
+            onClick={() => {
+              setshowAddExpenseModal(true)
+            }} className="btn btn-primary">+ Expenses</button>
+
           <button
             onClick={() => {
               setshowAddIncomeModal(true)
             }}
             className="btn btn-primary-outline">+ Income</button>
+
         </section>
 
         {/* Expenses */}
