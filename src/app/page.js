@@ -66,12 +66,14 @@ export default function Home() {
 
           <div className="flex flex-col gap-4 mt-6">
             {expenses.map((expense, id) => {
+              // console.log("EXPENSES",expense)
               return (
                 <ExpenseCatogoryItem
                   key={expense.id}
-                  color={expense.color}
-                  title={expense.title}
-                  total={expense.total}
+                  expense={expense}
+                // color={expense.color}
+                // title={expense.title}
+                // total={expense.total}
                 />
               )
             })}
