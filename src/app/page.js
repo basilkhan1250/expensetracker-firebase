@@ -8,6 +8,8 @@ import { useState, useContext, useEffect } from "react"
 import { financeContext } from "./lib/store/finance-context"
 import AddIncomeModal from "@/app/components/modals/AddIncomeModal"
 import AddExpensesModal from "./components/modals/AddExpensesModal"
+import SignIn from "./components/SignIn"
+import { authContext } from "../../auth-context"
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -18,6 +20,7 @@ export default function Home() {
   const [showAddExpenseModal, setshowAddExpenseModal] = useState(false)
   const [balance, setBalance] = useState(0)
   const { expenses, income } = useContext(financeContext)
+  const { user } = useContext(authContext)
 
   useEffect(() => {
 
@@ -30,6 +33,11 @@ export default function Home() {
 
     setBalance(newBalance)
   }, [expenses, income])
+
+
+  if (!user) {
+    return <SignIn />
+  }
 
   return (
     <>

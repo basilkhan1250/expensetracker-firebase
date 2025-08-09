@@ -1,8 +1,9 @@
 'use client'
 
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { db } from "../../../../firebaseConfig";
-import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc } from "firebase/firestore"
+import { collection, addDoc, getDocs, doc, deleteDoc, updateDoc, query, where } from "firebase/firestore"
+import { authContext } from "../../../../auth-context";
 
 export const financeContext = createContext({
     income: [],
@@ -18,11 +19,14 @@ export const financeContext = createContext({
 export default function FinanceContextProvider({ children }) {
     const [income, setIncome] = useState([])
     const [expenses, setExpenses] = useState([])
+    const { user } = useContext(authContext)
 
     const addCategory = async (Category) => {
         try {
             const collectionRef = collection(db, "expense")
             const docSnap = await addDoc(collectionRef, {
+
+                uid: user.uid,
                 ...Category,
                 items: [],
             })
@@ -32,6 +36,7 @@ export default function FinanceContextProvider({ children }) {
                     ...prevExpenses,
                     {
                         id: docSnap.id,
+                        uid: user.uid,
                         items: [],
                         ...Category
                     }
@@ -139,9 +144,11 @@ export default function FinanceContextProvider({ children }) {
 
 
     useEffect(() => {
+        if (!user) return
         const getIncomeData = async () => {
             const collectionRef = collection(db, "income")
-            const docsSnap = await getDocs(collectionRef)
+            const q = query(collectionRef, where("uid", "==", user.uid))
+            const docsSnap = await getDocs(q)
             console.log(docsSnap.docs)
             const data = docsSnap.docs.map(doc => {
                 return {
@@ -157,7 +164,9 @@ export default function FinanceContextProvider({ children }) {
 
         const getExpenseData = async () => {
             const collectionRef = collection(db, "expense")
-            const docsSnap = await getDocs(collectionRef)
+            const q = query(collectionRef, where("uid", "==", user.uid))
+
+            const docsSnap = await getDocs(q)
 
             const data = docsSnap.docs.map((doc) => {
                 return {
@@ -171,7 +180,7 @@ export default function FinanceContextProvider({ children }) {
 
         getIncomeData()
         getExpenseData()
-    }, [])
+    }, [user])
 
     return (
         <financeContext.Provider value={values}>

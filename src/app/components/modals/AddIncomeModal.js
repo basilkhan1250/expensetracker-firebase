@@ -4,6 +4,7 @@ import { currencyFormatter } from "@/app/lib/utils"
 import { FaRegTrashAlt } from 'react-icons/fa'
 import Modal from "@/app/components/Modal"
 import { financeContext } from "@/app/lib/store/finance-context"
+import { authContext } from "../../../../auth-context"
 
 
 function AddIncomeModal({ show, onClose }) {
@@ -11,8 +12,9 @@ function AddIncomeModal({ show, onClose }) {
     const descriptionRef = useRef()
     const { income, addIncomeItem, removeIncomeItem } = useContext(financeContext)
 
-    // function handlers
+    const { user } = useContext(authContext)
 
+    // function handlers
 
     const addIncomeHandler = async (e) => {
         e.preventDefault()
@@ -20,10 +22,11 @@ function AddIncomeModal({ show, onClose }) {
         const newIncome = {
             amount: +amountRef.current.value,
             description: descriptionRef.current.value,
-            createAt: new Date()
+            createAt: new Date(),
+            uid: user.uid
         }
         console.log(typeof newIncome.amount)
-        
+
 
         try {
             await addIncomeItem(newIncome)
