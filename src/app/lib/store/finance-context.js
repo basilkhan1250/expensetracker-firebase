@@ -12,6 +12,7 @@ export const financeContext = createContext({
     addExpenseItem: async () => { },
     addCategory: async () => { },
     deleteExpenseItem: async () => { },
+    deleteExpenseCategory: async () => { },
 })
 
 export default function FinanceContextProvider({ children }) {
@@ -83,6 +84,21 @@ export default function FinanceContextProvider({ children }) {
         }
     }
 
+    const deleteExpenseCategory = async (expenseCatogaryId) => {
+
+        try {
+            const docRef = doc(db, "expenses", expenseCatogaryId)
+            await deleteDoc(docRef)
+
+            setExpenses((prevExpenses) => {
+                const updatedExpenses = prevExpenses.filter((expense) => expense.id !== expenseCatogaryId)
+                return [...updatedExpenses]
+            })
+        } catch (error) {
+            throw error
+        }
+    }
+
     const addIncomeItem = async (newIncome) => {
 
         const collectionRef = collection(db, "income")
@@ -119,7 +135,7 @@ export default function FinanceContextProvider({ children }) {
             throw error
         }
     }
-    const values = { income, expenses, addIncomeItem, removeIncomeItem, addExpenseItem, addCategory, deleteExpenseItem }
+    const values = { income, expenses, addIncomeItem, removeIncomeItem, addExpenseItem, addCategory, deleteExpenseItem, deleteExpenseCategory }
 
 
     useEffect(() => {

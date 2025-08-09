@@ -6,7 +6,17 @@ import { financeContext } from "@/app/lib/store/finance-context";
 
 function ViewExpenseModal({ show, onClose, expense }) {
     // console.log("EXPENSE",expense)
-    const { deleteExpenseItem } = useContext(financeContext)
+    const { deleteExpenseItem, deleteExpenseCategory } = useContext(financeContext)
+
+
+    const deleteExpenseHandler = async () => {
+        try {
+            await deleteExpenseCategory(expense.id)
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
 
     const deleteExpressItemHandler = async (item) => {
         try {
@@ -28,7 +38,7 @@ function ViewExpenseModal({ show, onClose, expense }) {
             <Modal show={show} onClose={onClose}>
                 <div className="flex items-center justify-between">
                     <h2 className="text-4xl">{expense.title}</h2>
-                    <button className="btn btn-danger">Delete</button>
+                    <button onClick={deleteExpenseHandler} className="btn btn-danger">Delete</button>
                 </div>
 
                 <div>
