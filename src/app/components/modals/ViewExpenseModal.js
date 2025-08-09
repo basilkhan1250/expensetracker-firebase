@@ -1,7 +1,28 @@
+import { currencyFormatter } from "@/app/lib/utils";
 import Modal from "../Modal"
+import { FaRegTrashAlt } from "react-icons/fa";
+import { useContext } from "react";
+import { financeContext } from "@/app/lib/store/finance-context";
 
 function ViewExpenseModal({ show, onClose, expense }) {
     // console.log("EXPENSE",expense)
+    const { deleteExpenseItem } = useContext(financeContext)
+
+    const deleteExpressItemHandler = async (item) => {
+        try {
+            const updatedItems = expense.items.filter((i) => i.id === item.id)
+
+            const updatedExpense = {
+                items: [...updatedItems],
+                total: expense.total - item.amount,
+            }
+
+            await deleteExpenseItem(updatedExpense, expense.id)
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
     return (
         <>
             <Modal show={show} onClose={onClose}>
@@ -13,17 +34,25 @@ function ViewExpenseModal({ show, onClose, expense }) {
                 <div>
                     <h3 className="my-4 text-2xl">Expense History</h3>
                     {/* {console.log(expense)} */}
-                    {expense.items.map((item,i) => {
+                    {expense.items.map((item, i) => {
                         console.log(expense.items[i])
-                        // const _date = (expense.items[i].createdAt)
-                        
-                        return <div key={item.id} className="flex items-center justify-between">
-                            <small>
+                        console.log(JSON.stringify(expense.items[i], null, 2));
 
-                                {/* { _date } */}
-                                    
-                            </small>
-                        </div>
+                        // const _date = (expense.items[i].createdAt)
+
+                        return (
+                            <div key={item.id} className="flex items-center justify-between">
+                                <small>
+                                    {item.createdAt && item.createdAt.toMillis
+                                        ? new Date(item.createdAt.toMillis()).toISOString()
+                                        : new Date(item.createdAt).toISOString()}
+                                </small>
+                                <p className="flex items-center gap-2">{currencyFormatter(item.amount)}</p>
+                                <button onClick={() => {
+                                    deleteExpressItemHandler(item)
+                                }}><FaRegTrashAlt /></button>
+                            </div>
+                        )
                     })}
                 </div>
             </Modal>

@@ -11,6 +11,7 @@ export const financeContext = createContext({
     removeIncomeItem: async () => { },
     addExpenseItem: async () => { },
     addCategory: async () => { },
+    deleteExpenseItem: async () => { },
 })
 
 export default function FinanceContextProvider({ children }) {
@@ -62,6 +63,26 @@ export default function FinanceContextProvider({ children }) {
         }
     }
 
+    const deleteExpenseItem = async (updatedExpense, expenseCatogaryId) => {
+        try {
+            const docRef = doc(db, "expense", expenseCatogaryId)
+            await updateDoc(docRef, {
+                ...updatedExpense
+            })
+
+            setExpenses(prevExpense => {
+                const updatedExpenses = [...prevExpense]
+                const pos = updatedExpenses.findIndex((ex) => ex.id === expenseCatogaryId)
+                updatedExpenses[pos].items = [...updatedExpense.items]
+                updatedExpenses[pos].total = updatedExpense.total
+                return updatedExpenses
+
+            })
+        } catch (error) {
+            throw error
+        }
+    }
+
     const addIncomeItem = async (newIncome) => {
 
         const collectionRef = collection(db, "income")
@@ -98,8 +119,8 @@ export default function FinanceContextProvider({ children }) {
             throw error
         }
     }
+    const values = { income, expenses, addIncomeItem, removeIncomeItem, addExpenseItem, addCategory, deleteExpenseItem }
 
-    const values = { income, expenses, addIncomeItem, removeIncomeItem, addExpenseItem, addCategory }
 
     useEffect(() => {
         const getIncomeData = async () => {
@@ -113,6 +134,8 @@ export default function FinanceContextProvider({ children }) {
                     createAt: new Date(doc.data().createAt.toMillis())
                 }
             })
+            console.log(docsSnap.docs)
+            console.log(data)
             setIncome(data)
         }
 
