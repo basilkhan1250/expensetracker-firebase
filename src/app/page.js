@@ -23,10 +23,10 @@ export default function Home() {
 
     const newBalance = income.reduce((total, i) => {
       return total + i.amount
-    }, 0)
-    expenses.reduce((total, e) => {
-      return total + e.total
-    }, 0)
+    }, 0) -
+      expenses.reduce((total, e) => {
+        return total + e.total
+      }, 0)
 
     setBalance(newBalance)
   }, [expenses, income])
