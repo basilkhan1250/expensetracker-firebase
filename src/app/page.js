@@ -24,12 +24,10 @@ export default function Home() {
 
   useEffect(() => {
 
-    const newBalance = income.reduce((total, i) => {
-      return total + i.amount
-    }, 0) -
-      expenses.reduce((total, e) => {
-        return total + e.total
-      }, 0)
+    const totalIncome = income.reduce((total, i) => { return total + i.amount }, 0)
+    const totalExpense = expenses.reduce((total, e) => { return total + e.total }, 0)
+
+    const newBalance = totalIncome - totalExpense
 
     setBalance(newBalance)
   }, [expenses, income])
@@ -79,9 +77,6 @@ export default function Home() {
                 <ExpenseCatogoryItem
                   key={expense.id}
                   expense={expense}
-                // color={expense.color}
-                // title={expense.title}
-                // total={expense.total}
                 />
               )
             })}

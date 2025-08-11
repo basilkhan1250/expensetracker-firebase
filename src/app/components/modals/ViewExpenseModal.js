@@ -20,18 +20,24 @@ function ViewExpenseModal({ show, onClose, expense }) {
 
     const deleteExpressItemHandler = async (item) => {
         try {
-            const updatedItems = expense.items.filter((i) => i.id === item.id)
+            // Remove the clicked item
+            const updatedItems = expense.items.filter((i) => i.id !== item.id);
+
+            // Recalculate total from the remaining items to avoid sync issues
+            const updatedTotal = updatedItems.reduce((sum, i) => sum + i.amount, 0);
 
             const updatedExpense = {
-                items: [...updatedItems],
-                total: expense.total - item.amount,
-            }
+                ...expense,
+                items: updatedItems,
+                total: updatedTotal,
+            };
 
-            await deleteExpenseItem(updatedExpense, expense.id)
+            await deleteExpenseItem(updatedExpense, expense.id);
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
         }
-    }
+    };
+
 
     return (
         <>
