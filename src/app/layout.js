@@ -6,6 +6,7 @@ import "./globals.css";
 import Nav from "@/app/components/Navigation"
 import FinanceContextProvider from "./lib/store/finance-context";
 import AuthContextProvider from "../../auth-context";
+import { ToastContainer, toast } from "react-toastify";
 
 
 const geistSans = Geist({
@@ -27,8 +28,9 @@ export default function RootLayout({ children }) {
       >
         <AuthContextProvider>
           <FinanceContextProvider>
-            <Nav />
-            {children}
+            <ToastContainer />
+              <Nav />
+              {children}
           </FinanceContextProvider>
         </AuthContextProvider>
       </body>
