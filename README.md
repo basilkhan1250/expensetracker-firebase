@@ -1,4 +1,4 @@
-#💰 Expense Tracker – Smart Personal Finance Management
+# 💰 Expense Tracker – Smart Personal Finance Management
 A modern web-based expense tracker built with Next.js, Firebase, and React Context API to help you easily manage your income and expenses in real time.
 
 ##✨ Features:
