@@ -5,6 +5,7 @@ import { useState } from "react"
 function ExpenseCatogoryItem({ expense }) {
     const [showViewExpenseModal, setShowViewExpenseModal] = useState(false)
             //   console.log("EXPENSES",expense)
+            
 
     return (
         <>

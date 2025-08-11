@@ -9,7 +9,7 @@ function ViewExpenseModal({ show, onClose, expense }) {
     const { deleteExpenseItem, deleteExpenseCategory } = useContext(financeContext)
 
 
-    const deleteExpenseHandler = async () => {
+    const deleteExpenseHandler = async () => {      
         try {
             await deleteExpenseCategory(expense.id)
         } catch (error) {

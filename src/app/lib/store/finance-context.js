@@ -92,14 +92,16 @@ export default function FinanceContextProvider({ children }) {
     const deleteExpenseCategory = async (expenseCatogaryId) => {
 
         try {
-            const docRef = doc(db, "expenses", expenseCatogaryId)
+            const docRef = doc(db, "expense", expenseCatogaryId)
             await deleteDoc(docRef)
 
             setExpenses((prevExpenses) => {
-                const updatedExpenses = prevExpenses.filter((expense) => expense.id !== expenseCatogaryId)
-                return [...updatedExpenses]
+                // const updatedExpenses = 
+                return prevExpenses.filter((expense) => expense.id !== expenseCatogaryId)
+                // return [...updatedExpenses]
             })
         } catch (error) {
+            console.error("Failed to delete expense category", error.message)
             throw error
         }
     }
