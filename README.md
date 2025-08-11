@@ -3,7 +3,7 @@ A modern web-based expense tracker built with Next.js, Firebase, and React Conte
 
 ## ✨ Features:
 
-Categorized Expenses ** – Organize spending into custom categories.
+Categorized Expenses – Organize spending into custom categories.
 
 Real-Time Data Sync – Powered by Firebase Firestore for instant updates.
 
