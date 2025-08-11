@@ -1,9 +1,9 @@
 # 💰 Expense Tracker – Smart Personal Finance Management
 A modern web-based expense tracker built with Next.js, Firebase, and React Context API to help you easily manage your income and expenses in real time.
 
-##✨ Features:
+## ✨ Features:
 
-Categorized Expenses** – Organize spending into custom categories.
+Categorized Expenses ** – Organize spending into custom categories.
 
 Real-Time Data Sync – Powered by Firebase Firestore for instant updates.
 
@@ -16,7 +16,7 @@ Persistent Authentication – Secure login with Firebase Authentication.
 Dynamic Totals – Automatically calculates category totals as you add or remove items.
 
 
-##⚙️ Tech Stack:
+## ⚙️ Tech Stack:
 
 Frontend: Next.js, React, Tailwind CSS
 
